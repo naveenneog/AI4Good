@@ -82,4 +82,4 @@ GPU; pipe logs to App Insights. CLI: `az ml online-endpoint create`. Python: `az
 
 > **GPU rule of thumb [Assumption]:** ≤8B → L4/A10; 24B → A100-80GB; 35B+/FP4 → H100/B200.
 
-➡️ **See the [Side Quest](/DailyBlogs/sidequest.html)** for a 5-model feasibility check.
+➡️ **See the [Side Quest](/DailyBlogs/sidequest/)** for a 5-model feasibility check.
