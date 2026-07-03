@@ -1,16 +1,17 @@
 title: DailyBlogs
 description: A general-topic blog on cloud, AI, and engineering — one build a day.
 author: naveenneog
-theme: minima
-baseurl: ""
-url: "https://naveenneog.github.io/DailyBlogs"
+baseurl: "/DailyBlogs"
+url: "https://naveenneog.github.io"
+permalink: /:year/:month/:day/:title/
 
-minima:
-  skin: dark
-
-header_pages:
-  - about.md
-  - sidequest.md
+nav_links:
+  - title: Home
+    url: /
+  - title: About
+    url: /about/
+  - title: Side Quest
+    url: /sidequest/
 
 plugins:
   - jekyll-feed

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  {% seo %}
+  {% feed_meta %}
+</head>
+<body>
+  <div class="bg-fx" aria-hidden="true">
+    <div class="grid"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="scanline"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <span class="brand-mark">◈</span>
+        <span class="brand-name">DAILY<span class="accent">BLOGS</span></span>
+      </a>
+      <nav class="site-nav">
+        {% for link in site.nav_links %}
+          <a href="{{ link.url | relative_url }}" class="nav-link{% if page.url == link.url %} active{% endif %}">{{ link.title }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap site-main">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="foot-brand">◈ DAILYBLOGS</span>
+      <span class="foot-meta">{{ site.description }}</span>
+      <span class="foot-links">
+        <a href="https://github.com/naveenneog/DailyBlogs">GitHub</a>
+        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      </span>
+    </div>
+    <div class="wrap foot-copy">© {{ site.time | date: '%Y' }} naveenneog · built with Jekyll · Digital Neo theme</div>
+  </footer>
+</body>
+</html>

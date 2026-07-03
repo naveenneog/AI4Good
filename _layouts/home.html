@@ -1,0 +1,39 @@
+---
+layout: default
+---
+<section class="hero">
+  <span class="kicker">// TRANSMISSIONS FROM THE STACK</span>
+  <h1 class="hero-title">{{ page.hero_title | default: site.title }}</h1>
+  <p class="hero-sub">{{ page.hero_subtitle | default: site.description }}</p>
+  <div class="hero-cta">
+    {% assign latest = site.posts.first %}
+    {% if latest %}<a class="btn btn-primary" href="{{ latest.url | relative_url }}">Read latest ↗</a>{% endif %}
+    <a class="btn btn-ghost" href="{{ '/sidequest/' | relative_url }}">Enter Side Quest</a>
+  </div>
+</section>
+
+{% if content != '' %}
+<section class="intro glass">{{ content }}</section>
+{% endif %}
+
+<section class="posts">
+  <h2 class="section-title"><span class="hash">#</span> latest posts</h2>
+  <div class="post-grid">
+    {% for post in site.posts %}
+    <article class="card">
+      <a class="card-link" href="{{ post.url | relative_url }}">
+        <div class="card-top">
+          <time class="card-date">{{ post.date | date: '%Y.%m.%d' }}</time>
+          {% if post.categories.size > 0 %}<span class="card-cat">{{ post.categories | join: ' / ' }}</span>{% endif %}
+        </div>
+        <h3 class="card-title">{{ post.title }}</h3>
+        <p class="card-excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</p>
+        {% if post.tags.size > 0 %}
+        <div class="chips">{% for t in post.tags %}<span class="chip">{{ t }}</span>{% endfor %}</div>
+        {% endif %}
+        <span class="card-more">read →</span>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
