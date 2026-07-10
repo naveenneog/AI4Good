@@ -1,7 +1,7 @@
 ---
 title: 'AI4Good: I Shipped an AI-for-Good App Every Few Days — Here''s the Build Story'
 published: true
-description: 'Six apps in eighteen days — a kids'' education app, an Indian-language health app, two heritage games, a video editor, and a GPS camera — each built from a laptop with AI in the loop and shipped free to all. This is the #AI4Good build story, chapter by chapter.'
+description: 'Eight apps in eighteen days — a local music player, a video editor, a kids'' education app, an Indian-language health app, a GPS camera, an AI shadow-puppet film studio, and two heritage games — each built from a laptop with AI in the loop and shipped free. This is the #AI4Good build story, chapter by chapter.'
 tags: 'ai4good, ai, opensource, showcase'
 cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/hero.png'
 canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/10/ai4good-an-app-a-day/'
@@ -9,19 +9,27 @@ id: 4111622
 date: '2026-07-10T08:14:57Z'
 ---
 
-![AI4Good — six apps, eighteen days, AI for good](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/hero.png)
+![AI4Good — eight apps, eighteen days, AI for good](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/hero.png)
 
-> **#AI4Good** started as a dare to myself: *can I use AI to build and ship something genuinely useful — for kids, for health, for our culture — one build at a time?* Eighteen days later there were **six live apps**, each free, each on GitHub Pages with an Android build. This is the story of how they came to be, in the order they were born.
+> **#AI4Good** started as a dare to myself: *can I use AI to build and ship something genuinely useful — for kids, for health, for our culture — one build at a time?* Eighteen days later there were **eight live apps**, each free, each on GitHub Pages. This is the story of how they came to be, in the order they were born — and **each has its own deep-dive post** on the [AI4Good blog](https://naveenneog.github.io/AI4Good/).
 
-I'm **Naveen Gopalakrishna** — an AI Global Black Belt at Microsoft by day, a compulsive builder by night. The tooling that made this pace possible was **GitHub Copilot CLI in autopilot mode** (the agent researches, writes code, runs builds, and renders assets autonomously) on top of **Azure AI** — `gpt-image-2` for art, Azure Speech for narration, and open models from Hugging Face for the heavy lifting. But tools are just tools. The thread that ties these six together is a question I kept asking: **who does this help?**
+I'm **Naveen Gopalakrishna** — an AI Global Black Belt at Microsoft by day, a compulsive builder by night. The tooling that made this pace possible was **GitHub Copilot CLI in autopilot mode** (the agent researches, writes code, runs builds, and renders assets autonomously) on top of **Azure AI** — `gpt-image-2` for art, Azure Speech for narration, and open models from Hugging Face for the heavy lifting. But tools are just tools. The thread that ties these eight together is a question I kept asking: **who does this help?**
 
 Let's walk the timeline.
+
+## Jun 22 — PrimeBeats: your music, beautifully local
+
+![PrimeBeats landing page — your music, beautifully local](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/shot-primebeats.png)
+
+Where it started. [**PrimeBeats**](https://naveenneog.github.io/PrimeBeats/) is an Amazon-Prime-Music-style player for the songs already on your phone — **background playback**, **lock-screen controls**, playlists, an on-device **Smart Radio**, and a real **equalizer**. No account, no ads, **100% offline**. Built with React Native + Expo.
+
+**The good:** ownership and privacy — your music, zero data, zero tracking, zero cost.
 
 ## Jun 23 — ActionCut: put a pro video studio in everyone's pocket
 
 ![ActionCut landing page](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/shot-actioncut.png)
 
-The first build set the tone: take something normally locked behind subscriptions and make it **free and open**. [**ActionCut**](https://naveenneog.github.io/ActionCut/) is a CapCut-class Android video editor — a real **multi-track timeline**, **LUT color filters**, GPU effects, audio mixing, and one-tap **export presets** for every platform. Built in **Kotlin + Jetpack Compose + Media3**.
+The next build set the tone: take something normally locked behind subscriptions and make it **free and open**. [**ActionCut**](https://naveenneog.github.io/ActionCut/) is a CapCut-class Android video editor — a real **multi-track timeline**, **LUT color filters**, GPU effects, audio mixing, and one-tap **export presets** for every platform. Built in **Kotlin + Jetpack Compose + Media3**.
 
 **The good:** creators on entry-level Android phones get studio-grade editing without a paywall or a watermark. Storytelling shouldn't require a subscription.
 
@@ -49,6 +57,14 @@ This is the app that named the whole campaign. [**KidKat**](https://naveenneog.g
 
 **The good:** field engineers, insurance surveyors, community reporters, and site inspectors need **verifiable, tamper-evident documentation**. A trustworthy timestamped-and-geotagged photo is a small tool that quietly protects people.
 
+## Jul 05 — The Lamp & the Machine: shadow-puppet theatre as an AI film studio
+
+![The Lamp & the Machine — Togalu Gombeyaata meets generative AI](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/shot-sora.png)
+
+[**The Lamp & the Machine**](https://naveenneog.github.io/Sora-Azure-MultiPart-Video-Editing/) turns Karnataka's 500-year-old leather shadow-puppet theatre, **Togalu Gombeyaata**, into an AI film studio — cinematic scenes from **Sora 2**, narration from **Azure AI**, finished with Demucs + FFmpeg, retelling the story of **Kempegowda**, the founder of Bengaluru.
+
+**The good:** generative AI as a **preservation tool** — putting a fading folk art in front of a new generation.
+
 ## Jul 06 — Sopāna: a Snakes & Ladders that teaches
 
 ![Sopana landing page — Moksha Patam](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-10-ai4good-app-a-day/shot-sopana.png)
@@ -69,14 +85,16 @@ The pieces themselves are an AI-for-good story: I generated each one from a sing
 
 ## What #AI4Good actually means
 
-Look at the six together and a pattern appears — not "AI apps," but **apps that use AI to do something good**:
+Look at all eight together and a pattern appears — not "AI apps," but **apps that use AI to do something good**:
 
 | Day | App | Who it serves | The good |
 |-----|-----|---------------|----------|
+| Jun 22 | [PrimeBeats](https://naveenneog.github.io/PrimeBeats/) | Listeners | Own your music — offline, ad-free |
 | Jun 23 | [ActionCut](https://naveenneog.github.io/ActionCut/) | Creators | Studio-grade editing, free |
 | Jun 26 | [KidKat](https://naveenneog.github.io/KidKat/) | Kids & parents | Safe, finite, educational screen time |
 | Jun 27 | [NeoFit](https://naveenneog.github.io/NeoFit/) | 1.4B Indians | Health in 22 languages |
 | Jul 04 | [GpsCamera](https://naveenneog.github.io/GpsCamera/) | Field workers | Verifiable documentation |
+| Jul 05 | [The Lamp & the Machine](https://naveenneog.github.io/Sora-Azure-MultiPart-Video-Editing/) | Culture | Preserving a folk art with AI |
 | Jul 06 | [Sopāna](https://naveenneog.github.io/Sopana/) | Families | Values + heritage, playfully |
 | Jul 09 | [Chaturanga](https://naveenneog.github.io/Chaturanga/) | Learners | Free chess tutor + culture |
 

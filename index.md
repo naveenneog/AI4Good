@@ -11,13 +11,15 @@ occasional deep technical dive into Azure, AI, and 3D.
 
 ### The #AI4Good apps
 
-Six apps, shipped one at a time — each free, each with a live site and an Android build:
+Eight apps, shipped one at a time — each free, each with a live site:
 
+- 🎵 **[PrimeBeats](https://naveenneog.github.io/PrimeBeats/)** — a beautiful, offline, ad-free local music player
+- 🎬 **[ActionCut](https://naveenneog.github.io/ActionCut/)** — a CapCut-class Android video editor
 - 🎓 **[KidKat](https://naveenneog.github.io/KidKat/)** — safe, finite educational videos for kids
 - 🩺 **[NeoFit](https://naveenneog.github.io/NeoFit/)** — science-informed Indian health in 22 languages
+- 📍 **[GpsCamera](https://naveenneog.github.io/GpsCamera/)** — geotag every photo, exactly
+- 🪔 **[The Lamp & the Machine](https://naveenneog.github.io/Sora-Azure-MultiPart-Video-Editing/)** — shadow-puppet theatre as an AI film studio
 - 🐍 **[Sopāna](https://naveenneog.github.io/Sopana/)** — a Snakes & Ladders that teaches (Moksha Patam)
 - ♟️ **[Chaturanga](https://naveenneog.github.io/Chaturanga/)** — ancient Indian chess, reborn in glowing 3D
-- 🎬 **[ActionCut](https://naveenneog.github.io/ActionCut/)** — a CapCut-class Android video editor
-- 📍 **[GpsCamera](https://naveenneog.github.io/GpsCamera/)** — geotag every photo, exactly
 
 📖 **Read the full build story:** [AI4Good — I shipped an app every few days]({{ '/2026/07/10/ai4good-an-app-a-day/' | relative_url }}) — or browse every post below.
