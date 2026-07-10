@@ -14,7 +14,7 @@ trailer_poster: /assets/img/2026-07-10-video-gen-studio/trailer_poster.jpg
 
 {% assign img = '/assets/img/2026-07-10-video-gen-studio' %}
 
-> **TL;DR** — Type one sentence. A crew of AI agents scripts it, storyboards it, and **waits for your approval** — then **Sora-2** renders every scene, **Azure AI Speech** narrates it, and a deterministic **ffmpeg** finishing pass burns in rolling captions, ducks a music bed under the voice, and tops-and-tails it with brand bumpers. Choose from **nine cinematic styles** — or upload any clip and it **mints a brand-new style** from the look. Everything lands in a **real editing timeline**. Built in a day, on Azure, driven by GitHub Copilot CLI in autopilot.
+> **TL;DR** — Type one sentence. A crew of AI agents scripts it, storyboards it, and **waits for your approval** — then **Sora-2** renders every scene, **Azure AI Speech** narrates it, and a deterministic **ffmpeg** finishing pass burns in rolling captions, ducks a music bed under the voice, and tops-and-tails it with brand bumpers. Choose from **nine cinematic styles** — or upload any clip and it **mints a brand-new style** from the look. Everything lands in a **real editing timeline**. Built on Azure, driven end-to-end by GitHub Copilot CLI in autopilot.
 
 ![A neon film-editing control room — the Video Gen Studio launch key art]({{ img | append: '/hero.png' | relative_url }})
 
@@ -133,7 +133,7 @@ Generative video isn't free, and the real bottleneck (Sora throughput, gpt-image
 
 ## The honest build journey
 
-This whole thing was built in a day, on Azure, with **GitHub Copilot CLI in autopilot** driving the code, deploys, and tests. The interesting part isn't that it worked — it's the three bugs that only surfaced because of *how* it was tested:
+This whole thing was built on Azure, with **GitHub Copilot CLI in autopilot** driving the code, deploys, and tests. The interesting part isn't that it worked — it's the three bugs that only surfaced because of *how* it was tested:
 
 - **The studio was silently blank — and every API test passed.** A React hooks-order slip (a `useState` after an early `return`) crashed the UI on opening any project. TypeScript builds and API checks were all green; it only showed up when a headless **Playwright** pass screenshotted the deployed app. Lesson: for UI, a real screenshot is worth a thousand green checks.
 - **Sora refused to render a person.** Photoreal styles were using a generated character sheet as an image reference, and Sora's moderation blocks reference images containing identifiable people (`people-in-user-uploads`). The fix: fall back to text-to-video for human/photoreal looks.
@@ -167,5 +167,5 @@ Video Gen Studio puts that whole crew behind **one prompt** — with the guardra
 <hr>
 
 <p style="color:var(--muted);font-size:13px">
-<em>*Rough estimate for a ~30-second, 6-scene film — a planning aid, not billing. Trailer footage is real Sora-2 output from the studio; on-page art is gpt-image-2. Built and documented with GitHub Copilot CLI in autopilot. #AI4Good — one build a day.</em>
+<em>*Rough estimate for a ~30-second, 6-scene film — a planning aid, not billing. Trailer footage is real Sora-2 output from the studio; on-page art is gpt-image-2. Built and documented with GitHub Copilot CLI in autopilot. #AI4Good</em>
 </p>
