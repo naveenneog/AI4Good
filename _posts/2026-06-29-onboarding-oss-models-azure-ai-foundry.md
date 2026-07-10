@@ -81,5 +81,3 @@ Govern with catalog allow-lists + Azure Policy; control cost via serverless vs r
 GPU; pipe logs to App Insights. CLI: `az ml online-endpoint create`. Python: `azure-ai-ml`.
 
 > **GPU rule of thumb [Assumption]:** ≤8B → L4/A10; 24B → A100-80GB; 35B+/FP4 → H100/B200.
-
-➡️ **See the [Side Quest](/DailyBlogs/sidequest/)** for a 5-model feasibility check.

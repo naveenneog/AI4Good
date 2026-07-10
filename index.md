@@ -6,5 +6,5 @@ hero_subtitle: "Hands-on guides for Azure, AI model deployment, and developer to
 ---
 
 Welcome to **DailyBlogs** — short, practical write-ups on cloud, AI, and
-software engineering. Architecture playbooks, deployment notes, and the
-occasional side quest.
+software engineering. Architecture playbooks, deployment notes, and
+hands-on build logs.

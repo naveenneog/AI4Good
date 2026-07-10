@@ -1,17 +1,22 @@
 title: DailyBlogs
 description: A general-topic blog on cloud, AI, and engineering — one build a day.
-author: naveenneog
 baseurl: "/DailyBlogs"
 url: "https://naveenneog.github.io"
 permalink: /:year/:month/:day/:title/
+
+author:
+  name: Naveen Gopalakrishna
+social:
+  name: Naveen Gopalakrishna
+  links:
+    - https://www.linkedin.com/in/naveen-gopalakrishna-99863040/
+    - https://github.com/naveenneog
 
 nav_links:
   - title: Home
     url: /
   - title: About
     url: /about/
-  - title: Side Quest
-    url: /sidequest/
 
 plugins:
   - jekyll-feed

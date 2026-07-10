@@ -5,7 +5,6 @@ A general-topic GitHub Pages blog (Jekyll + minima) on cloud, AI, and engineerin
 ## Contents
 - **Flagship post:** `_posts/2026-06-29-onboarding-oss-models-azure-ai-foundry.md` — onboarding open-source models into Azure AI Foundry.
 - **Image → 3D:** `_posts/2026-07-10-image-to-3d-huggingface-blender-copilot.md` — carving a glowing 3D chess army from single images with a free Hugging Face Space (`tencent/Hunyuan3D-2`) + headless Blender, driven by Copilot CLI autopilot. Rich renders + rotating turntables under `assets/img/2026-07-10-image-to-3d/`.
-- **Side quest:** [`sidequest.md`](sidequest.md) — feasibility check of 5 OSS models (✅/⚠️/❌, compute, blockers, paths).
 
 ## Run locally
 ```bash
