@@ -4,6 +4,17 @@ tagline: "AI for Good — one build a day"
 baseurl: "/AI4Good"
 url: "https://naveenneog.github.io"
 permalink: /:year/:month/:day/:title/
+future: true
+
+# articles/ holds DEV.to-only markdown (uses DEV Liquid tags like {% embed %});
+# keep it out of the Jekyll build. The publish-devto Action still reads it directly.
+exclude:
+  - articles
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - README.md
 
 author:
   name: Naveen Gopalakrishna

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AI4Good: I Shipped an AI-for-Good App Every Few Days — Here's the Build Story"
-date: 2026-07-10 14:00:00 +0530
+date: 2026-07-10 12:00:00 +0530
 categories: ai4good showcase
 tags: [ai4good, ai, azure, android, opensource, gpt-image, huggingface, indie-dev]
 image: /assets/img/2026-07-10-ai4good-app-a-day/hero.png
