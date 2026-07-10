@@ -12,7 +12,7 @@ layout: default
     </div>
     {% if page.trailer %}
     <div class="vg-trailer">
-      <span class="badge">▶ LAUNCH TRAILER · 0:21</span>
+      <span class="badge">{{ page.trailer_badge | default: '▶ LAUNCH TRAILER · 0:21' }}</span>
       <video controls playsinline preload="metadata" poster="{{ page.trailer_poster | relative_url }}">
         <source src="{{ page.trailer | relative_url }}" type="video/mp4">
         Your browser can't play the trailer — <a href="{{ page.trailer | relative_url }}">download it</a>.
