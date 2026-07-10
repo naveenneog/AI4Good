@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'articles/**'
+  workflow_dispatch: {}
 
 # Allow the action to read repo contents (needed to resolve images / commit back the article id).
 permissions:
@@ -21,7 +22,7 @@ jobs:
       - name: Publish to DEV.to
         uses: sinedied/publish-devto@v2
         with:
-          devto_key: ${{ secrets.DEV_TO_GIT_TOKEN }}
+          devto_key: ${{ secrets.DEVTOMASTERKEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: 'articles/*.md'
           branch: main

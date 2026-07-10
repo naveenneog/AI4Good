@@ -25,7 +25,9 @@ via [`.github/workflows/publish.yml`](.github/workflows/publish.yml) (uses [`sin
 **One-time setup — add your DEV API key as a secret:**
 1. Generate a key at **DEV → Settings → Extensions → DEV Community API Keys**.
 2. In this repo: **Settings → Secrets and variables → Actions → New repository secret**.
-3. Name it **`DEV_TO_GIT_TOKEN`**, paste the key, save.
+3. Name it **`DEVTOMASTERKEY`**, paste the key, save.
+
+You can run the sync manually anytime from **Actions → Publish to DEV → Run workflow** (the workflow also has a `workflow_dispatch` trigger), or just push a change under `articles/`.
 
 Each article's front matter carries `published: false` (creates a **draft** on DEV to review first); flip to
 `true` to go live. Images use absolute `raw.githubusercontent.com` URLs so they render on DEV, and `canonical_url`
