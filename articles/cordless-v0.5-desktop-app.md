@@ -1,10 +1,12 @@
 ---
-title: "cordless v0.5: A Desktop App, a >_< Logo, and QR-First Security"
+title: 'cordless v0.5: A Desktop App, a >_< Logo, and QR-First Security'
 published: true
-description: "cordless grows up: a hardened Electron desktop app for Windows/macOS/Linux, a >_< brand logo generated with gpt-image-2, and a security course-correction that keeps QR pairing as the one true way in — with a loopback-only desktop shortcut that a Tailscale IP can never use."
-tags: ai4good, electron, security, opensource
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-11-cordless-v0.5-desktop-app/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/07/11/cordless-v0.5-desktop-app/
+description: 'cordless grows up: a hardened Electron desktop app for Windows/macOS/Linux, a >_< brand logo generated with gpt-image-2, and a security course-correction that keeps QR pairing as the one true way in — with a loopback-only desktop shortcut that a Tailscale IP can never use.'
+tags: 'ai4good, electron, security, opensource'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-11-cordless-v0.5-desktop-app/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/11/cordless-v0.5-desktop-app/'
+id: 4118659
+date: '2026-07-11T09:14:05Z'
 ---
 
 > **TL;DR** — [cordless](https://naveenneog.github.io/cordless/) manages many remote terminal / coding-agent (Claude Code, Codex) sessions **like browser tabs**, with sessions that survive disconnects. **v0.5** adds a **hardened Electron desktop app** (Windows `.exe`, macOS `.dmg`, Linux `.AppImage`/`.deb`), a proper **`>_<` brand logo** made with **gpt-image-2**, and a **security course-correction**: QR pairing stays the *only* default way in, and the desktop's one-click "Connect to this computer" uses a **loopback-only** credential that a Tailscale or LAN address is *rejected* for. As always — designed with **GPT-5.6 Sol**, driven with **GitHub Copilot CLI**.
