@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&family=Alumni+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   <script>document.documentElement.classList.add('has-js');</script>
@@ -15,6 +15,19 @@
 <body>
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="page-glow" aria-hidden="true"></div>
+  <canvas id="bg-scene" aria-hidden="true"></canvas>
+  <div class="scene-scrim" aria-hidden="true"></div>
+
+  {%- comment -%} Data-driven 3D parallax: every post with an image (and optional bg_video) floats in the scene. {%- endcomment -%}
+  <script>
+    window.AI4GOOD_MEDIA = [
+      {%- for post in site.posts -%}
+        {%- if post.image -%}
+          {"img":{{ post.image | relative_url | jsonify }},"video":{% if post.bg_video %}{{ post.bg_video | relative_url | jsonify }}{% else %}null{% endif %},"title":{{ post.title | jsonify }}}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ];
+  </script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -44,8 +57,10 @@
         <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
       </span>
     </div>
-    <div class="wrap foot-copy">© {{ site.time | date: '%Y' }} Naveen Gopalakrishna · #AI4Good · built with Jekyll · Atelier theme</div>
+    <div class="wrap foot-copy">© {{ site.time | date: '%Y' }} Naveen Gopalakrishna · #AI4Good · built with Jekyll · Nebula theme</div>
   </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="{{ '/assets/js/scene.js' | relative_url }}"></script>
   <script defer src="{{ '/assets/js/motion.js' | relative_url }}"></script>
 </body>
 </html>
