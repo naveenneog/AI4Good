@@ -1,10 +1,12 @@
 ---
-title: "Cast in Bidri Metal: Four Ancient Karnataka Board Games, Reborn in 3D"
+title: 'Cast in Bidri Metal: Four Ancient Karnataka Board Games, Reborn in 3D'
 published: true
-description: "Four traditional Karnataka board games rebuilt as free, offline, Kannada-first 3D games, each dressed in a hand-designed Bidri metalwork world modelled on the blackened-silver craft of Bidar. The history, the artisan-matching art pipeline, and the whole build story."
-tags: ai4good, gamedev, threejs, opensource
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-21-karnataka-bidri-board-games/hero.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/07/21/karnataka-bidri-board-games/
+description: 'Four traditional Karnataka board games rebuilt as free, offline, Kannada-first 3D games, each dressed in a hand-designed Bidri metalwork world modelled on the blackened-silver craft of Bidar. The history, the artisan-matching art pipeline, and the whole build story.'
+tags: 'ai4good, gamedev, threejs, opensource'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-21-karnataka-bidri-board-games/hero.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/21/karnataka-bidri-board-games/'
+id: 4199079
+date: '2026-07-21T17:27:06Z'
 ---
 
 ![Four Karnataka board games rendered as Bidri metalwork app icons](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-21-karnataka-bidri-board-games/hero.png)
