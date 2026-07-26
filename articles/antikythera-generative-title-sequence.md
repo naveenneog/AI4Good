@@ -1,10 +1,12 @@
 ---
-title: "ANTIKYTHERA: A 29-Second Title Sequence in One HTML File — No Assets, No Build Step"
+title: 'ANTIKYTHERA: A 29-Second Title Sequence in One HTML File — No Assets, No Build Step'
 published: true
-description: "Given one prompt — 'demonstrate the absolute ceiling of your motion design capability, you pick the subject' — Copilot CLI produced a 29-second documentary title sequence about the world's first computer. Every gear, texture, shader and note is generated in the browser at runtime. Here's the prompt, the full build, and exactly how the graphics and the audio were made."
-tags: ai4good, threejs, javascript, creativecoding
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-26-antikythera-generative-title-sequence/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/07/26/antikythera-generative-title-sequence/
+description: 'Given one prompt — ''demonstrate the absolute ceiling of your motion design capability, you pick the subject'' — Copilot CLI produced a 29-second documentary title sequence about the world''s first computer. Every gear, texture, shader and note is generated in the browser at runtime. Here''s the prompt, the full build, and exactly how the graphics and the audio were made.'
+tags: 'ai4good, threejs, javascript, creativecoding'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-26-antikythera-generative-title-sequence/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/26/antikythera-generative-title-sequence/'
+id: 4237358
+date: '2026-07-26T14:56:43Z'
 ---
 
 [![ANTIKYTHERA — four frames from the title sequence: the bronze gear train, the X-ray scan, the total eclipse, and the title card](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-26-antikythera-generative-title-sequence/card.png)](https://naveenneog.github.io/Antikythera/)
