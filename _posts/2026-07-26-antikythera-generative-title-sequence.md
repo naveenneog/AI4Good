@@ -234,7 +234,9 @@ GEARS.forEach((g, i) => {
 });
 ```
 
-Sound and picture can't drift, because there's only one clock. And because the browser blocks autoplay audio until a gesture, the whole thing is designed to read perfectly **silent** — the sound is a layer on top of timing that already works.
+Sound and picture can't drift, because there's only one clock. Sound is **on by default**. Browsers won't start an `AudioContext` without a user gesture, so the piece tries immediately on load and — if the browser refuses — arms every plausible first gesture anywhere on the page. Whichever click lands first unlocks it, and the drone then **joins at the point in its envelope the picture has already reached** rather than restarting its five-second fade underneath Act III. A small "click anywhere for sound" hint surfaces only if the browser actually blocked it, and vanishes the moment it doesn't.
+
+It's still designed to read perfectly **silent** — the sound is a layer on top of timing that already works.
 
 ---
 
@@ -304,7 +306,7 @@ The second is the **subject**. The Antikythera mechanism is a reminder that the 
 
 ## Try it
 
-- ▶️ **Watch it:** [naveenneog.github.io/Antikythera](https://naveenneog.github.io/Antikythera/) — plays on load, ~29s, click **Sound On** for the score
+- ▶️ **Watch it:** [naveenneog.github.io/Antikythera](https://naveenneog.github.io/Antikythera/) — plays on load with sound, ~29s
 - 💻 **Source (MIT, one file):** [github.com/naveenneog/Antikythera](https://github.com/naveenneog/Antikythera)
 - 🛠 **Built with:** [Three.js r149](https://threejs.org) · [GSAP + CustomEase](https://gsap.com) · Web Audio API · Bodoni Moda / Archivo / JetBrains Mono · [GitHub Copilot CLI](https://github.com/features/copilot/cli)
 
