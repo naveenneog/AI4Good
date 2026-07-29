@@ -1,10 +1,12 @@
 ---
-title: "Overdrive: An Open-Source Skill That Makes Your Coding Agent Stop Settling for Correct"
+title: 'Overdrive: An Open-Source Skill That Makes Your Coding Agent Stop Settling for Correct'
 published: true
-description: "Five frontier-model 'absolute ceiling' evaluation prompts across five unrelated domains turned out to share one identical skeleton. I extracted it into an agent skill. One npx command installs it into GitHub Copilot CLI and Claude Code."
-tags: ai, opensource, productivity, devtools
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-29-overdrive-agent-skill/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/07/29/overdrive-agent-skill/
+description: Five frontier-model 'absolute ceiling' evaluation prompts across five unrelated domains turned out to share one identical skeleton. I extracted it into an agent skill. One npx command installs it into GitHub Copilot CLI and Claude Code.
+tags: 'ai, opensource, productivity, devtools'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-29-overdrive-agent-skill/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/29/overdrive-agent-skill/'
+id: 4260839
+date: '2026-07-29T08:51:47Z'
 ---
 [![Overdrive — a capability amplifier for coding agents, installed with a single npx command](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-29-overdrive-agent-skill/card.png)](https://github.com/naveenneog/overdrive)
 
