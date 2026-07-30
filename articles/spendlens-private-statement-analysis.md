@@ -1,10 +1,12 @@
 ---
-title: "SpendLens: Private, On-Device Bank-Statement Analysis — No Login, No Cloud, No LLM"
+title: 'SpendLens: Private, On-Device Bank-Statement Analysis — No Login, No Cloud, No LLM'
 published: true
-description: "Day 17 of #AI4Good. SpendLens turns Indian bank-statement PDFs into reconciled totals, categories, and daily trends entirely on your device — no bank login, no cloud upload, no analytics, and no LLM anywhere near your money. Built with Flutter and a deterministic 78-bank parser."
-tags: ai4good, flutter, privacy, opensource
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-30-spendlens-private-statement-analysis/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/07/30/spendlens-private-statement-analysis/
+description: 'Day 17 of #AI4Good. SpendLens turns Indian bank-statement PDFs into reconciled totals, categories, and daily trends entirely on your device — no bank login, no cloud upload, no analytics, and no LLM anywhere near your money. Built with Flutter and a deterministic 78-bank parser.'
+tags: 'ai4good, flutter, privacy, opensource'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-30-spendlens-private-statement-analysis/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/07/30/spendlens-private-statement-analysis/'
+id: 4269190
+date: '2026-07-30T07:13:08Z'
 ---
 
 [![SpendLens — a bank statement analyzed entirely on-device: reconciled totals, spend by category, and a daily-spend chart, marked Verified](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-07-30-spendlens-private-statement-analysis/card.png)](https://naveenneog.github.io/SpendLens/)
