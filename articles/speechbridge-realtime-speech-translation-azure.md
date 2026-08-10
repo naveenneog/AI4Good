@@ -1,10 +1,12 @@
 ---
-title: "SpeechBridge: Near-Realtime Speech Translation on Azure — Keyless, One-Command, and Honest About Its Latency"
+title: 'SpeechBridge: Near-Realtime Speech Translation on Azure — Keyless, One-Command, and Honest About Its Latency'
 published: true
-description: "Two people who don't share a language, one laptop, and about half a second of delay. SpeechBridge is an open-source Azure Solution Accelerator for live interpreted conversation — with no API keys anywhere, one-command deployment, and a README that names the situations where you must not use it."
-tags: ai4good, azure, opensource, ai
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-10-speechbridge-realtime-speech-translation-azure/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/08/10/speechbridge-realtime-speech-translation-azure/
+description: 'Two people who don''t share a language, one laptop, and about half a second of delay. SpeechBridge is an open-source Azure Solution Accelerator for live interpreted conversation — with no API keys anywhere, one-command deployment, and a README that names the situations where you must not use it.'
+tags: 'ai4good, azure, opensource, ai'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-10-speechbridge-realtime-speech-translation-azure/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/10/speechbridge-realtime-speech-translation-azure/'
+id: 4361530
+date: '2026-08-10T14:21:33Z'
 ---
 
 ![SpeechBridge translating English to Hindi in real time — the speaker's panel shows "Good morning." while the listener's panel shows "सुप्रभात।", with per-turn latency displayed as 0.2s, 0.2s, 0.4s](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-10-speechbridge-realtime-speech-translation-azure/card.png)
