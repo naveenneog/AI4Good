@@ -115,9 +115,41 @@ azd auth login && azd up
 ```
 
 Bicep provisions the AI Services account, a managed identity with the *Cognitive Services
-Speech User* role, a container registry, Container Apps, and monitoring — then builds the image
+User* role, a container registry, Container Apps, and monitoring — then builds the image
 **remotely in ACR** (so you don't need Docker installed), creates the Microsoft Entra app
 registration, and turns on sign-in.
+
+### The bug that only a real deployment could find
+
+That role is *Cognitive Services User*, and getting there cost me an hour.
+
+I had assigned **Cognitive Services Speech User** — the obvious choice for a speech app, and
+what every instinct says is correct least-privilege. The deployed app failed every single
+token exchange:
+
+```
+HTTP 401 {"error":{"code":"PermissionDenied",
+          "message":"Principal does not have access to API/Operation."}}
+```
+
+The role assignment existed. The client ID matched. The endpoint was right. It wasn't
+propagation — I retried for forty minutes.
+
+Listing the role's actual permissions explains it. Every data action *Cognitive Services
+Speech User* grants sits beneath `accounts/SpeechServices/…`, `CustomVoice`, `TTSPlayer`.
+**Not one of them authorises `/sts/v1.0/issueToken`**, which isn't under `SpeechServices` at
+all. That's the endpoint my whole keyless design depends on.
+
+And here's why it hid so well: **locally, everything worked perfectly.** Because locally I was
+signed in as a subscription **Owner**, and inherited roles quietly supplied the permission the
+explicitly-assigned one lacked. The managed identity had no such inheritance. It was the first
+principal to ever exercise that role as actually written.
+
+A permission model verified only by a subscription Owner proves almost nothing.
+
+That's now the second bug on this project that survived template validation, unit tests and
+careful reading, and died the moment something real ran. Both had the same shape: **my
+development environment was more privileged and more permissive than production.**
 
 I originally targeted App Service and it validated perfectly. Then I actually deployed it:
 
@@ -168,3 +200,4 @@ it's a machine, and provide a human alternative for anything that matters.
 - ☁️ **Deploy:** `azd up` — keyless, authenticated, about two minutes
 - 🖥️ **Local:** `npm install && npm run dev`, then `az login`. No API key required.
 - 📖 **The decisions:** [`docs/adr/`](https://github.com/naveenneog/speechbridge/tree/main/docs/adr) — including the two landmines above, and every place a review found me wrong.
+
