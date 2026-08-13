@@ -1,10 +1,12 @@
 ---
-title: "Governing Claude Code with Azure API Management: Per-Developer Budgets, Tiering and Chargeback on Microsoft Foundry"
+title: 'Governing Claude Code with Azure API Management: Per-Developer Budgets, Tiering and Chargeback on Microsoft Foundry'
 published: true
-description: "Hand Claude Code to a whole team without giving anyone a model credential. An Azure API Management AI gateway in front of Foundry gives per-developer token budgets, Entra ID group tiering, 429 throttling and per-person chargeback. Step-by-step, with a one-command accelerator."
-tags: azure, ai, devops, governance
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-governance-apim-foundry/architecture.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-governance-apim-foundry/
+description: 'Hand Claude Code to a whole team without giving anyone a model credential. An Azure API Management AI gateway in front of Foundry gives per-developer token budgets, Entra ID group tiering, 429 throttling and per-person chargeback. Step-by-step, with a one-command accelerator.'
+tags: 'azure, ai, devops, governance'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-governance-apim-foundry/architecture.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-governance-apim-foundry/'
+id: 4388270
+date: '2026-08-13T13:20:35Z'
 ---
 ![Architecture: developer's Entra ID token to an APIM AI gateway, which validates identity, applies tiered token budgets, emits chargeback metrics, then calls Microsoft Foundry with its own managed identity](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-governance-apim-foundry/architecture.png)
 
