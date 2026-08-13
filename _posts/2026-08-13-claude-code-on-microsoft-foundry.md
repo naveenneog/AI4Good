@@ -24,6 +24,70 @@ Verified on **13 Aug 2026**, Claude Code **v2.1.223**, against `claude-sonnet-5`
 
 ---
 
+## Step 0 — Find your values (start here)
+
+The whole setup needs five values. Here is what each one looks like, where it lives, and the
+command that prints it. Examples below are real values from my own subscription with a few
+characters masked.
+
+| Value | Example | Used for |
+|---|---|---|
+| **Subscription ID** | `e839ff0f-532b-4828-****-****19d85` | `az account set` |
+| **Resource group** | `rg-cont****hub` | every `az ... -g` flag |
+| **Foundry resource name** | `ai-contosohub****751908` | `ANTHROPIC_FOUNDRY_RESOURCE` |
+| **Region** | `eastus2` | checking model availability |
+| **Deployment names** | `claude-sonnet-5`, `claude-opus-5` | the three model aliases |
+
+### Where they live in the Azure portal
+
+Open [portal.azure.com](https://portal.azure.com) → search your Foundry resource by name →
+**Overview**. Everything except the deployment names is on this one blade:
+
+![Azure portal Overview blade for a Foundry resource, with the resource name, resource group, subscription, subscription ID, location and API kind highlighted]({{ img | append: '/portal-overview.png' | relative_url }})
+
+Read off:
+
+- **Resource name** — the page title. `API Kind` must say `AIServices`.
+- **Resource group** and **Subscription** / **Subscription ID** — in *Essentials*.
+- **Location** — the region, for Step 1.
+- **Keys and Endpoint** (left nav, under *Resource Management*) — the endpoint URLs.
+- **Access control (IAM)** (left nav) — where you add the role in Step 2.
+
+**Deployment names** are not in the Azure portal. Click **Go to Foundry portal** at the top of
+that blade, then **View deployments** on the project home — or just use the CLI below, which is
+faster.
+
+### Or get everything from the CLI
+
+```powershell
+az login
+
+# subscription + tenant
+az account show --query "{subscription:id, tenant:tenantId, user:user.name}" -o table
+
+# every Foundry resource you can see, with its resource group and region
+az cognitiveservices account list `
+    --query "[?kind=='AIServices'].{name:name, rg:resourceGroup, region:location}" -o table
+
+# the deployment names on one of them
+az cognitiveservices account deployment list -n <resource> -g <rg> -o table
+```
+
+Or run [`Get-FoundryValues.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Get-FoundryValues.ps1),
+which finds every value, checks the RBAC role, and prints the exact config block to paste into
+Steps 4 and 5. With no arguments it scans your subscription and picks a resource that actually
+has Claude deployments. Add `-Mask` when screenshotting or pasting into a ticket:
+
+```powershell
+.\Get-FoundryValues.ps1 -Mask
+```
+
+![Get-FoundryValues.ps1 output listing the signed-in account, subscription and tenant, resource name and group, region, the Anthropic endpoint, both Claude deployment names, the data-plane role check, and the resulting settings.json block — all partially masked]({{ img | append: '/values.png' | relative_url }})
+
+The last block is the config you need — copy it straight into Step 4.2 or 5.2.
+
+---
+
 ## Prerequisites
 
 | Requirement | Check |
@@ -34,6 +98,8 @@ Verified on **13 Aug 2026**, Claude Code **v2.1.223**, against `claude-sonnet-5`
 | Azure CLI | `az --version` |
 | Node.js 18+ | `node --version` |
 | VS Code 1.94+ | `code --version` |
+
+If you don't yet know your resource name, resource group or deployment names, do **Step 0** first.
 
 ---
 
@@ -378,6 +444,7 @@ Auth precedence: `ANTHROPIC_FOUNDRY_AUTH_TOKEN` → `ANTHROPIC_FOUNDRY_API_KEY` 
 
 ## Scripts
 
+- [`Get-FoundryValues.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Get-FoundryValues.ps1) — finds every value in Step 0 and prints the config block (`-Mask` to share safely)
 - [`Setup-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Setup-ClaudeFoundry.ps1) — writes both config files, backs up what is already there
 - [`Test-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Test-ClaudeFoundry.ps1) — the seven checks in Step 6
 - [`get-foundry-token.sh`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/get-foundry-token.sh) — optional token helper for CI (Azure CLI, then IMDS)
