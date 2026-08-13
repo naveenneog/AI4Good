@@ -1,10 +1,12 @@
 ---
-title: "Claude Desktop on Microsoft Foundry: Third-Party Inference Mode, Entra ID Sign-In, and What Claude Design Cannot Do"
+title: 'Claude Desktop on Microsoft Foundry: Third-Party Inference Mode, Entra ID Sign-In, and What Claude Design Cannot Do'
 published: true
-description: "Claude Desktop can run against Claude models in your own Microsoft Foundry resource, signed in with Microsoft Entra ID. It is a managed-configuration feature, not a settings toggle. Here is the step-by-step, verified against the shipping binary - plus the one Claude feature that cannot follow you to Foundry."
-tags: azure, ai, devops, windows
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-desktop-microsoft-foundry/desktop-signin.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/08/13/claude-desktop-microsoft-foundry/
+description: 'Claude Desktop can run against Claude models in your own Microsoft Foundry resource, signed in with Microsoft Entra ID. It is a managed-configuration feature, not a settings toggle. Here is the step-by-step, verified against the shipping binary - plus the one Claude feature that cannot follow you to Foundry.'
+tags: 'azure, ai, devops, windows'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-desktop-microsoft-foundry/desktop-signin.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/13/claude-desktop-microsoft-foundry/'
+id: 4388499
+date: '2026-08-13T14:04:57Z'
 ---
 After getting [Claude Code onto Foundry](https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-on-microsoft-foundry/)
 and then [governing it with an APIM gateway](https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-governance-apim-foundry/),
