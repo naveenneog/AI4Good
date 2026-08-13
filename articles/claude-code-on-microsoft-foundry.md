@@ -1,7 +1,7 @@
 ---
-title: "Run Claude Code on Microsoft Foundry: Step-by-Step Setup for VS Code and the CLI"
+title: 'Run Claude Code on Microsoft Foundry: Step-by-Step Setup for VS Code and the CLI'
 published: true
-description: "Step-by-step instructions to point Anthropic's Claude Code at Claude models deployed in your own Microsoft Foundry resource, authenticated with Microsoft Entra ID. VS Code extension setup first, then the CLI, then verification. No API keys, no proxy."
+description: 'Step-by-step instructions to point Anthropic''s Claude Code at Claude models deployed in your own Microsoft Foundry resource, authenticated with Microsoft Entra ID. VS Code extension setup first, then the CLI, then verification. No API keys, no proxy.'
 tags: 'azure, ai, devtools, vscode'
 cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png'
 canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-on-microsoft-foundry/'
