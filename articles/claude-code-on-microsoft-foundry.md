@@ -1,10 +1,12 @@
 ---
-title: "Claude Code on Microsoft Foundry: Your Own Claude Deployment, Entra ID Auth, No API Key"
+title: 'Claude Code on Microsoft Foundry: Your Own Claude Deployment, Entra ID Auth, No API Key'
 published: true
-description: "Anthropic's Claude Code, pointed at Claude models running in your own Azure AI Foundry resource, authenticating with az login or a managed identity. No Anthropic account, no API key in a dotfile, no proxy in the middle. Here is the working setup, the seven checks that prove it, and every dead end I hit."
-tags: azure, ai, devtools, opensource
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-on-microsoft-foundry/
+description: 'Anthropic''s Claude Code, pointed at Claude models running in your own Azure AI Foundry resource, authenticating with az login or a managed identity. No Anthropic account, no API key in a dotfile, no proxy in the middle. Here is the working setup, the seven checks that prove it, and every dead end I hit.'
+tags: 'azure, ai, devtools, opensource'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-on-microsoft-foundry/'
+id: 4386440
+date: '2026-08-13T09:19:02Z'
 ---
 
 ![Claude Code's /status panel reporting "API provider: Microsoft Foundry" and the Foundry resource name, with the model resolved to claude-sonnet-5](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png)
