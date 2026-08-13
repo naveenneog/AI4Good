@@ -1,110 +1,235 @@
 ---
-title: 'Claude Code on Microsoft Foundry: Your Own Claude Deployment, Entra ID Auth, No API Key'
+title: "Run Claude Code on Microsoft Foundry: Step-by-Step Setup for VS Code and the CLI"
 published: true
-description: 'Anthropic''s Claude Code, pointed at Claude models running in your own Azure AI Foundry resource, authenticating with az login or a managed identity. No Anthropic account, no API key in a dotfile, no proxy in the middle. Here is the working setup, the seven checks that prove it, and every dead end I hit.'
-tags: 'azure, ai, devtools, opensource'
+description: "Step-by-step instructions to point Anthropic's Claude Code at Claude models deployed in your own Microsoft Foundry resource, authenticated with Microsoft Entra ID. VS Code extension setup first, then the CLI, then verification. No API keys, no proxy."
+tags: 'azure, ai, devtools, vscode'
 cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png'
 canonical_url: 'https://naveenneog.github.io/AI4Good/2026/08/13/claude-code-on-microsoft-foundry/'
 id: 4386440
 date: '2026-08-13T09:19:02Z'
 ---
 
-![Claude Code's /status panel reporting "API provider: Microsoft Foundry" and the Foundry resource name, with the model resolved to claude-sonnet-5](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png)
+![Claude Code /status output showing API provider: Microsoft Foundry, the Foundry resource name, and the model resolved to claude-sonnet-5](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/card.png)
 
-> **#AI4Good — engineering notes.** I wanted Claude Code to run against *my* Claude deployment
-> in Azure, billed to my subscription, gated by my tenant's identity. It turns out that takes
-> two environment variables and no proxy at all. Getting to those two variables took a while.
+Claude Code can run against Claude models deployed in **your own Microsoft Foundry resource**,
+authenticated with **Microsoft Entra ID** — `az login` on a workstation, managed identity on
+Azure compute. No Anthropic account, no API key on disk, no proxy.
 
-There's a specific kind of friction that keeps good tools out of regulated organisations. The
-tool is fine. The model is fine. What fails review is the sentence *"and then each developer
-pastes a vendor API key into a file on their laptop."*
+This is the procedure. Steps 1–3 are shared setup, **Step 4 is the VS Code extension**, **Step 5
+is the CLI**, Step 6 verifies. Steps 4 and 5 are independent — do either or both.
 
-So the question I actually wanted answered was narrow: **can Claude Code talk to Claude models
-deployed in my own Azure AI Foundry resource, using Microsoft Entra ID, with no long-lived
-secret anywhere?**
+Verified on **13 Aug 2026**, Claude Code **v2.1.223**, against `claude-sonnet-5` and
+`claude-opus-5` in **East US 2**.
 
-Yes. And the setup is much smaller than the internet suggests.
+---
 
-## The short answer
+## Prerequisites
+
+| Requirement | Check |
+|---|---|
+| Foundry resource, kind `AIServices` | `az cognitiveservices account show -n <res> -g <rg> --query kind -o tsv` |
+| Claude models deployed | Step 1 |
+| `Cognitive Services User` on the resource | Step 2 |
+| Azure CLI | `az --version` |
+| Node.js 18+ | `node --version` |
+| VS Code 1.94+ | `code --version` |
+
+---
+
+## Step 1 — Confirm your Claude deployments
+
+```powershell
+az cognitiveservices account deployment list -n <resource> -g <rg> -o table
+```
+
+Note the **deployment names** in the output. These are the names you configure later — they are
+yours, not Anthropic's catalogue names.
+
+To create a deployment:
+
+```powershell
+az cognitiveservices account deployment create `
+    -n <resource> -g <rg> `
+    --deployment-name claude-haiku-4-5 `
+    --model-name claude-haiku-4-5 --model-version 2 --model-format Anthropic `
+    --sku-name GlobalStandard --sku-capacity 1
+```
+
+To list what your region offers:
+
+```powershell
+az cognitiveservices model list -l <region> -o json |
+    ConvertFrom-Json |
+    Where-Object { $_.model.format -eq 'Anthropic' } |
+    ForEach-Object { $_.model.name } | Sort-Object -Unique
+```
+
+> **If deployment creation fails with a Marketplace error** — Claude models bill through Azure
+> Marketplace. Internal, sandbox, CSP, student and sponsored-credit subscriptions are blocked
+> from creating them:
+>
+> ```
+> ERROR: Marketplace purchases are disabled for this subscription due to policy restrictions.
+> ```
+>
+> Existing deployments keep working. Map the missing alias to a deployment you do have (Step 4.2).
+
+---
+
+## Step 2 — Grant data-plane access
+
+Owner on the subscription is **not** sufficient — that is control plane. Inference needs the
+data-plane role **Cognitive Services User** (`a97b65f3-24c7-4388-baec-2e87135dc908`).
+
+```powershell
+$scope = az cognitiveservices account show -n <resource> -g <rg> --query id -o tsv
+
+az role assignment create `
+    --assignee "<upn-or-object-id>" `
+    --role "Cognitive Services User" `
+    --scope $scope
+```
+
+Verify:
+
+```powershell
+az role assignment list --assignee "<you>" --scope $scope --include-inherited -o table
+```
+
+---
+
+## Step 3 — Sign in with Entra ID
+
+**Workstation:**
 
 ```powershell
 az login
-npm install -g @anthropic-ai/claude-code
-
-$env:CLAUDE_CODE_USE_FOUNDRY   = "1"
-$env:ANTHROPIC_FOUNDRY_RESOURCE = "<your-foundry-resource-name>"
-
-claude
+az account set --subscription <subscription-id>
 ```
 
-That's it. No gateway, no LiteLLM, no `claude-code-router`. Those exist for good reasons —
-central cost attribution, audit logging — but none of them are required just to reach Foundry.
+**Azure compute (VM, Container App, DevBox) — managed identity:**
 
-## Why no proxy is needed
-
-Most "run tool X on Azure" guides need a shim because Azure speaks OpenAI's wire format and the
-tool speaks something else. That is **not** the case here.
-
-Foundry exposes Claude deployments through a **native Anthropic Messages API**:
-
-```
-POST https://<resource>.services.ai.azure.com/anthropic/v1/messages
-     Authorization: Bearer <entra-id-token>
-     anthropic-version: 2023-06-01
+```bash
+az login --identity                          # system-assigned
+az login --identity --username <client-id>   # user-assigned
 ```
 
-The wire format is genuine Anthropic — same `messages` array, same `content` blocks, same
-`tool_use` semantics, same SSE streaming. So Claude Code can just… talk to it.
+Assign the same role from Step 2 to the identity:
 
-I checked what else that endpoint would answer to, because assuming is how you lose an
-afternoon:
+```powershell
+az role assignment create `
+    --assignee-object-id <managed-identity-principal-id> `
+    --assignee-principal-type ServicePrincipal `
+    --role "Cognitive Services User" `
+    --scope $scope
+```
 
-| Path | Result |
-|---|---|
-| `/anthropic/v1/messages` | **200** |
-| `/anthropic/v1/messages/count_tokens` | **200** |
-| `/openai/v1/chat/completions` | 404 `api_not_supported` |
-| `/models/chat/completions` | 404 `api_not_supported` |
-| `/openai/deployments/<name>/chat/completions` | 404 `api_not_supported` |
-| `/anthropic/v1/models` | 404 `api_not_supported` |
+Confirm a token is obtainable:
 
-So: the Anthropic routes, and **only** the Anthropic routes. If you reflexively reach for
-`chat/completions` on a Claude deployment — as I did — that 404 is the first thing you'll meet.
+```powershell
+az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv
+```
 
-Streaming, tool use and `count_tokens` all work, which matters because Claude Code leans on all
-three constantly. An agent that can't stream or call tools isn't an agent.
+> Both `https://cognitiveservices.azure.com` and `https://ai.azure.com` are accepted scopes.
 
-## The two variables that actually matter
+Optional — prove the endpoint answers before involving Claude Code at all:
 
-Claude Code has a **built-in Foundry mode**. Set it, and it constructs that URL from your
-resource name and fetches bearer tokens through the Azure SDK's `DefaultAzureCredential` chain.
+```powershell
+$t = az account get-access-token --resource https://cognitiveservices.azure.com --query accessToken -o tsv
 
-| Variable | What it does |
-|---|---|
-| `CLAUDE_CODE_USE_FOUNDRY=1` | Switches Claude Code into Foundry mode |
-| `ANTHROPIC_FOUNDRY_RESOURCE` | Your resource **name** — not a URL |
+Invoke-RestMethod -Method Post `
+    -Uri "https://<resource>.services.ai.azure.com/anthropic/v1/messages" `
+    -Headers @{ Authorization = "Bearer $t"; 'anthropic-version' = '2023-06-01' } `
+    -ContentType 'application/json' `
+    -Body '{"model":"claude-sonnet-5","max_tokens":32,"messages":[{"role":"user","content":"Reply with exactly: FOUNDRY-OK"}]}'
+```
 
-`DefaultAzureCredential` is the whole trick. It picks up `az login` on a laptop and a **managed
-identity** on Azure compute, with no configuration difference between the two. Leave
-`ANTHROPIC_FOUNDRY_API_KEY` and `ANTHROPIC_FOUNDRY_AUTH_TOKEN` unset and it falls through to
-that chain automatically. Nothing to rotate, nothing to leak.
+---
 
-> **`CLAUDE_CODE_USE_AZURE` does not exist.** I guessed it first, obviously. To be sure I wasn't
-> trusting a stale doc, I scanned the shipped v2.1.223 binary: `CLAUDE_CODE_USE_FOUNDRY`,
-> `ANTHROPIC_FOUNDRY_RESOURCE`, `ANTHROPIC_FOUNDRY_BASE_URL`, `ANTHROPIC_FOUNDRY_API_KEY` and
-> `ANTHROPIC_FOUNDRY_AUTH_TOKEN` are all in there. `CLAUDE_CODE_USE_AZURE` is not.
+## Step 4 — VS Code extension setup
 
-## Making it permanent
+### 4.1 Install the extension
 
-Two files, no secrets in either.
+```powershell
+code --install-extension anthropic.claude-code
+```
 
-**`~/.claude/settings.json`** — the CLI:
+Or: **Ctrl+Shift+X** → search *Claude Code* → **Install** (publisher: Anthropic).
+
+The extension bundles its own engine. The npm CLI in Step 5 is not required for the panel to work.
+
+### 4.2 Configure
+
+Open **Ctrl+Shift+P → `Preferences: Open User Settings (JSON)`** and add:
 
 ```json
 {
+  "claudeCode.environmentVariables": [
+    { "name": "CLAUDE_CODE_USE_FOUNDRY",        "value": "1" },
+    { "name": "ANTHROPIC_FOUNDRY_RESOURCE",     "value": "<your-resource-name>" },
+    { "name": "ANTHROPIC_DEFAULT_OPUS_MODEL",   "value": "claude-opus-5" },
+    { "name": "ANTHROPIC_DEFAULT_SONNET_MODEL", "value": "claude-sonnet-5" },
+    { "name": "ANTHROPIC_DEFAULT_HAIKU_MODEL",  "value": "claude-haiku-4-5" }
+  ]
+}
+```
+
+Rules:
+
+1. `ANTHROPIC_FOUNDRY_RESOURCE` is the **resource name**, not a URL. Claude Code expands it to
+   `https://<resource>.services.ai.azure.com/anthropic`.
+2. **Pin all three model aliases** to deployment names that exist. Foundry mode does no start-up
+   model check, so a wrong alias fails mid-task as `DeploymentNotFound`, not at launch. If
+   `claude-haiku-4-5` is not deployed, set the haiku alias to your Sonnet deployment.
+3. Set **no key**. Leaving `ANTHROPIC_FOUNDRY_API_KEY` and `ANTHROPIC_FOUNDRY_AUTH_TOKEN` unset
+   is what makes Claude Code fall through to `DefaultAzureCredential`.
+
+If you also complete Step 5, `~/.claude/settings.json` alone is sufficient for the extension and
+this block is redundant — I tested that by deleting it and re-running. Either location works.
+
+### 4.3 Reload and open the panel
+
+1. **Ctrl+Shift+P → `Developer: Reload Window`**
+2. **Ctrl+Shift+P → `Claude Code: Open in Side Bar`**
+
+The panel opens straight into a usable prompt. **There is no sign-in step** — that absence is the
+first signal Entra ID resolved.
+
+![Claude Code panel open in VS Code showing a ready prompt with no sign-in required](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/panel.png)
+
+### 4.4 Confirm it answers
+
+Type any question about the open folder and send it. The panel calls its normal file tools and
+answers from your Foundry deployment.
+
+![Claude Code panel answering a question about a file after calling its Glob and Read tools](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/answer.png)
+
+![Animated walkthrough of the Claude Code panel opening without a login prompt and answering a question about the codebase](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/extension.gif)
+
+> `/status` does **not** work in the panel — it returns *"/status isn't available in this
+> environment."* Use Step 5.3 to inspect the provider.
+
+---
+
+## Step 5 — Claude Code CLI setup
+
+### 5.1 Install
+
+```powershell
+npm install -g @anthropic-ai/claude-code
+claude --version
+```
+
+### 5.2 Configure
+
+Create or edit `%USERPROFILE%\.claude\settings.json` (`~/.claude/settings.json` on macOS/Linux):
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "CLAUDE_CODE_USE_FOUNDRY": "1",
-    "ANTHROPIC_FOUNDRY_RESOURCE": "<your-resource>",
+    "ANTHROPIC_FOUNDRY_RESOURCE": "<your-resource-name>",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5"
@@ -112,133 +237,149 @@ Two files, no secrets in either.
 }
 ```
 
-**Pin all three model aliases.** Foundry mode does no start-up model check, so an alias pointing
-at a deployment you don't have doesn't fail at launch — it fails later, mid-task, as a
-`DeploymentNotFound`. Deployment names are *yours*, not Anthropic's catalogue names.
-
-I hit exactly this. `claude-haiku-4-5` — the small, cheap model Claude Code uses for background
-work — wasn't deployed on my resource, and I couldn't create it:
-
-```
-ERROR: Marketplace purchases are disabled for this subscription due to policy restrictions.
-```
-
-Claude models bill through Azure Marketplace, and internal, sandbox, CSP, student and
-sponsored-credit subscriptions are blocked from creating them. Existing deployments keep working
-fine. So I mapped `haiku` to my Sonnet deployment and moved on — slightly more expensive per
-background call, entirely functional.
-
-## The permission everyone gets wrong
-
-Being **Owner** on the subscription does not let you call the endpoint. That's a control-plane
-role; inference is data-plane. You need **Cognitive Services User**
-(`a97b65f3-24c7-4388-baec-2e87135dc908`):
+Same three rules as 4.2. For a one-off session, use environment variables instead:
 
 ```powershell
-$scope = az cognitiveservices account show -n <resource> -g <rg> --query id -o tsv
-az role assignment create --assignee "<you>" --role "Cognitive Services User" --scope $scope
+$env:CLAUDE_CODE_USE_FOUNDRY    = "1"
+$env:ANTHROPIC_FOUNDRY_RESOURCE = "<your-resource-name>"
+claude
 ```
 
-For CI or Azure compute, the same role goes to the managed identity and the sign-in becomes:
+### 5.3 Verify the provider
 
-```bash
-az login --identity                          # system-assigned
-az login --identity --username <client-id>   # user-assigned
+```powershell
+claude auth status
 ```
 
-Everything downstream is identical. That symmetry is the actual payoff: the laptop flow and the
-pipeline flow differ by one command.
-
-## Proving it, rather than hoping
-
-"It replied, so it must be working" is not evidence — Claude Code will happily fall back to an
-Anthropic account if it has one. I wrote a seven-point check that fails loudly instead.
-
-![Seven verification checks passing: Azure CLI sign-in, Entra ID token, Claude deployments found, Messages API responds, CLI installed, provider = foundry, and an end-to-end Claude Code turn on Foundry](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/verify.png)
-
-The two lines that actually settle it:
-
-```console
-$ claude auth status
+```json
 { "loggedIn": true, "authMethod": "third_party", "apiProvider": "foundry" }
+```
 
-$ claude doctor
+```powershell
+claude doctor
+```
+
+```
 CLAUDE_CODE_USE_FOUNDRY is set, so this session is using Microsoft Foundry
 - Not connected to the Anthropic API (api.anthropic.com)
 - Not signed in to claude.ai
 ```
 
-Not connected to Anthropic. Connected to my resource. That's the claim, verified from the tool's
-own mouth.
+Then start an interactive session and run `/status` — it reports **API provider: Microsoft
+Foundry** and the resource name (the screenshot at the top of this post).
 
-And from Azure's side, `TokenTransaction` metrics on the resource line up with the timestamps of
-my test runs — the traffic really did land where I think it did.
-
-## It works in the VS Code extension too
-
-Same credential, no extra wiring. Open the panel with **Ctrl+Shift+P → `Claude Code: Open in
-Side Bar`** and it drops straight into a usable prompt — **no sign-in step at all**, because the
-credential already resolved through Entra ID.
-
-![The Claude Code panel in VS Code answering a question about a file after calling its Glob and Read tools, with no sign-in prompt](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/answer.png)
-
-![Animated walkthrough: the Claude Code panel opens without a login prompt, then answers a question about the codebase using its file tools](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/extension.gif)
-
-It reads files with its normal tools and answers from the Foundry deployment. Agentic behaviour
-intact, model hosted in my tenant.
-
-I also documented — then corrected — a wrong assumption here. I'd written that the extension
-*requires* its own `claudeCode.environmentVariables` setting in VS Code. Then I actually tested
-it: removed that setting entirely, reloaded, asked again. It still worked, purely from
-`~/.claude/settings.json`. The extension's own setting description agrees: *"Prefer setting
-environment variables in Claude's settings.json."* Configure both if you like belt and braces,
-but one is enough.
-
-## Two gotchas worth your afternoon
-
-**`/status` is terminal-only.** In the VS Code panel it answers *"/status isn't available in this
-environment."* Run it in a terminal session instead — that's where the screenshot at the top of
-this post comes from.
-
-**On Windows, a bare `az` inside Git Bash is a trap.** It resolves to the WSL shim and returns:
-
-```
-Windows Subsystem for Linux has no installed distributions.
+```powershell
+claude
 ```
 
-…which then gets captured as your "token". Use `az.cmd`. And note that `command -v az.cmd`
-*also* fails, because bash doesn't apply `PATHEXT` — so probing for the file first doesn't save
-you. The reliable pattern is to run the candidate and validate that what came back is actually a
-JWT:
+### 5.4 One headless check
 
-```sh
-case "$TOKEN" in
-  eyJ*) : ;;            # looks like a JWT, keep it
-  *) return 1 ;;        # an error message wearing a token's clothes
-esac
+```powershell
+claude -p "Reply with exactly: FOUNDRY-OK" --output-format json
 ```
 
-That check is the difference between a helper that fails loudly and one that hands a WSL error
-string to your inference endpoint.
+Look for `"provider":"foundry"` and `"canonicalModel":"claude-sonnet-5"` in `modelUsage`.
 
-## The good
+---
 
-The interesting part isn't that this works. It's how *little* is required for it to work — two
-environment variables and an `az login`, because Foundry chose to expose the vendor's real API
-instead of a translated one.
+## Step 6 — Verify end to end
 
-That choice is what removes the shim. No proxy means no extra hop to secure, no second place for
-credentials to live, no component to keep patched between a developer and a model. The security
-review gets shorter, and the answer to "where does the key live?" becomes "there isn't one."
+Run the seven-point check ([`Test-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Test-ClaudeFoundry.ps1)):
 
-For teams who've been told they can't use the good agentic tools because of key handling: that
-objection is now just… gone. Your identity, your tenant, your subscription, your audit trail.
+```powershell
+.\Test-ClaudeFoundry.ps1 -Resource <resource> -ResourceGroup <rg>
+```
 
-## Try it
+![Seven verification checks passing: Azure CLI sign-in, Entra ID token, Claude deployments found, Messages API responds, CLI installed, provider equals foundry, and an end-to-end Claude Code turn](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-08-13-claude-code-on-microsoft-foundry/verify.png)
 
-- 💻 **Setup + verification scripts:** [`Setup-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Setup-ClaudeFoundry.ps1) configures both surfaces; [`Test-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Test-ClaudeFoundry.ps1) runs the seven checks; [`get-foundry-token.sh`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/get-foundry-token.sh) is the optional token helper for CI
-- 📘 **Anthropic — Claude Code on Microsoft Foundry:** <https://code.claude.com/docs/en/microsoft-foundry>
-- 📗 **Microsoft Learn — Deploy and use Claude models in Foundry:** <https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-claude>
+| # | Check |
+|---|---|
+| 1 | Azure CLI signed in |
+| 2 | Entra ID data-plane token acquired |
+| 3 | Claude deployments exist on the resource |
+| 4 | `/anthropic/v1/messages` responds over Entra ID auth |
+| 5 | Claude Code CLI installed |
+| 6 | `claude auth status` reports `foundry` |
+| 7 | A real Claude Code turn completes on Foundry |
 
-*Verified end-to-end on 13 August 2026 with Claude Code v2.1.223 against `claude-sonnet-5` and
-`claude-opus-5` deployments in East US 2.*
+It exits non-zero on failure, so it drops into CI unchanged.
+
+Confirm from the Azure side that traffic reached the resource:
+
+```powershell
+$rid = az cognitiveservices account show -n <resource> -g <rg> --query id -o tsv
+az monitor metrics list --resource $rid --metric TokenTransaction `
+    --start-time (Get-Date).ToUniversalTime().AddHours(-1).ToString('yyyy-MM-ddTHH:mm:ssZ') `
+    --interval PT5M --aggregation Total -o table
+```
+
+---
+
+## Reference
+
+**Endpoint**
+
+```
+POST https://<resource>.services.ai.azure.com/anthropic/v1/messages
+     Authorization: Bearer <entra-id-token>
+     anthropic-version: 2023-06-01
+     Content-Type: application/json
+```
+
+Foundry exposes Claude through the **native Anthropic Messages API**, which is why no proxy is
+needed. Verified on a live resource:
+
+| Path | Result |
+|---|---|
+| `/anthropic/v1/messages` | 200 |
+| `/anthropic/v1/messages/count_tokens` | 200 |
+| `/openai/v1/chat/completions` | 404 `api_not_supported` |
+| `/models/chat/completions` | 404 `api_not_supported` |
+| `/openai/deployments/<name>/chat/completions` | 404 `api_not_supported` |
+| `/anthropic/v1/models` | 404 `api_not_supported` |
+
+Streaming (SSE), tool use and `count_tokens` all work. `?api-version=` is optional.
+
+**Environment variables**
+
+| Variable | Purpose |
+|---|---|
+| `CLAUDE_CODE_USE_FOUNDRY` | `1` enables Foundry mode |
+| `ANTHROPIC_FOUNDRY_RESOURCE` | Resource name; expands to the `services.ai.azure.com/anthropic` base URL |
+| `ANTHROPIC_FOUNDRY_BASE_URL` | Full base URL override (gateways) |
+| `ANTHROPIC_FOUNDRY_API_KEY` | Key auth instead of Entra ID |
+| `ANTHROPIC_FOUNDRY_AUTH_TOKEN` | Pre-fetched bearer token; highest precedence |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | Deployment behind the `sonnet` alias |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | Deployment behind the `opus` alias |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | Deployment behind `haiku` and background tasks |
+
+Auth precedence: `ANTHROPIC_FOUNDRY_AUTH_TOKEN` → `ANTHROPIC_FOUNDRY_API_KEY` →
+`DefaultAzureCredential`.
+
+**`CLAUDE_CODE_USE_AZURE` does not exist.** Scanning the v2.1.223 binary shows all five
+`*_FOUNDRY_*` variables present and no `CLAUDE_CODE_USE_AZURE`.
+
+---
+
+## Troubleshooting
+
+| Symptom | Cause → Fix |
+|---|---|
+| `DeploymentNotFound` mid-task | A model alias points at a deployment you do not have. Re-pin it (4.2 / 5.2). |
+| HTTP 401 `invalid subscription key` | No usable `Authorization` header. Check Step 2 role and Step 3 sign-in. `Authorization: Bearer` wins when both it and `x-api-key` are sent. |
+| HTTP 404 `api_not_supported` | OpenAI-shaped path. Claude deployments expose only `/anthropic/*`. |
+| Extension prompts for Anthropic sign-in | Foundry variables not visible to it. Set them in `claudeCode.environmentVariables` or `~/.claude/settings.json`, then **Developer: Reload Window**. Shell exports do not reach the extension. |
+| `/status` unavailable | Panel-only limitation. Use `claude auth status`, or `/status` in a terminal session. |
+| Marketplace error on deployment create | Subscription is blocked from Marketplace purchases. Reuse existing deployments or use a pay-as-you-go subscription. |
+| Windows: helper returns a WSL error as the "token" | In Git Bash a bare `az` resolves to the WSL shim. Use `az.cmd`. Note `command -v az.cmd` also fails (bash ignores `PATHEXT`), so run the candidate and validate the result starts with `eyJ`. |
+
+---
+
+## Scripts
+
+- [`Setup-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Setup-ClaudeFoundry.ps1) — writes both config files, backs up what is already there
+- [`Test-ClaudeFoundry.ps1`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/Test-ClaudeFoundry.ps1) — the seven checks in Step 6
+- [`get-foundry-token.sh`](https://github.com/naveenneog/AI4Good/blob/main/assets/code/2026-08-13-claude-code-on-microsoft-foundry/get-foundry-token.sh) — optional token helper for CI (Azure CLI, then IMDS)
+
+**Docs:** [Anthropic — Claude Code on Microsoft Foundry](https://code.claude.com/docs/en/microsoft-foundry) ·
+[Microsoft Learn — Deploy and use Claude models in Foundry](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-claude)
