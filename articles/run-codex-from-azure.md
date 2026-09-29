@@ -1,10 +1,12 @@
 ---
-title: "Run Codex CLI on Azure OpenAI Without an API Key: Entra ID Step-by-Step"
+title: 'Run Codex CLI on Azure OpenAI Without an API Key: Entra ID Step-by-Step'
 published: true
-description: "Your subscription sets disableLocalAuth = true, so no Azure OpenAI API key exists - and the docs say Entra ID isn't supported for Codex. Both are true, and Codex still works. Step-by-step setup, the measurement that proves it, and the shell-injection bug found on the way."
-tags: azure, ai, devtools, security
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-run-codex-from-azure/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/09/29/run-codex-from-azure/
+description: 'Your subscription sets disableLocalAuth = true, so no Azure OpenAI API key exists - and the docs say Entra ID isn''t supported for Codex. Both are true, and Codex still works. Step-by-step setup, the measurement that proves it, and the shell-injection bug found on the way.'
+tags: 'azure, ai, devtools, security'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-run-codex-from-azure/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/09/29/run-codex-from-azure/'
+id: 4770370
+date: '2026-09-29T09:56:15Z'
 ---
 
 ![Run Codex CLI on Azure without an API key](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-run-codex-from-azure/card.png)
