@@ -1,10 +1,12 @@
 ---
-title: "Can ChatGPT Enterprise Use Your Azure Subscription for Inference? A Validation Report"
+title: Can ChatGPT Enterprise Use Your Azure Subscription for Inference? A Validation Report
 published: true
-description: "A customer asked whether ChatGPT Enterprise - Chat, Work and Codex - can route inference through their own Azure subscription so data stays inside their cloud boundary. Two of those surfaces can. Three cannot. Here is the validation, the scripts, and Azure-side evidence you can hand to an auditor."
-tags: azure, openai, enterprise, security
-cover_image: https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-chatgpt-enterprise-azure-inferencing/card.png
-canonical_url: https://naveenneog.github.io/AI4Good/2026/09/29/chatgpt-enterprise-azure-inferencing/
+description: 'A customer asked whether ChatGPT Enterprise - Chat, Work and Codex - can route inference through their own Azure subscription so data stays inside their cloud boundary. Two of those surfaces can. Three cannot. Here is the validation, the scripts, and Azure-side evidence you can hand to an auditor.'
+tags: 'azure, openai, enterprise, security'
+cover_image: 'https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-chatgpt-enterprise-azure-inferencing/card.png'
+canonical_url: 'https://naveenneog.github.io/AI4Good/2026/09/29/chatgpt-enterprise-azure-inferencing/'
+id: 4771996
+date: '2026-09-29T14:06:58Z'
 ---
 
 ![Can ChatGPT Enterprise run on your Azure subscription?](https://raw.githubusercontent.com/naveenneog/AI4Good/main/assets/img/2026-09-29-chatgpt-enterprise-azure-inferencing/card.png)
